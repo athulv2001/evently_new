@@ -9,16 +9,33 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "next": "15.1.6"
+    "@clerk/clerk-sdk-node": "^5.1.6",
+    "@clerk/nextjs": "^6.11.0",
+    "@radix-ui/react-slot": "^1.1.1",
+    "@uploadthing/react": "^7.1.5",
+    "class-variance-authority": "^0.7.1",
+    "cloudflared": "^0.6.0",
+    "clsx": "^2.1.1",
+    "localtunnel": "^2.0.2",
+    "lucide-react": "^0.474.0",
+    "mongodb": "^6.13.0",
+    "mongoose": "^8.9.6",
+    "next": "^14.0.4",
+    "ngrok": "^5.0.0-beta.2",
+    "query-string": "^9.1.1",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "svix": "^1.45.1",
+    "tailwind-merge": "^3.0.1",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
-    "typescript": "^5",
     "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "autoprefixer": "^10.0.1",
     "postcss": "^8",
-    "tailwindcss": "^3.4.1"
+    "tailwindcss": "^3.3.0",
+    "typescript": "^5"
   }
 }
