@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import React, { useState } from 'react';
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -6,18 +6,15 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { eventFormSchema } from '@/lib/validator';
 import { eventDefaultValues } from '@/constants';
 import DropDown from './Dropdown';
 import { FileUploader } from './FileUploader'; // ✅ Uncommented for image upload
+import Image from 'next/image';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 type EventFormProps = {
   userId: string;
@@ -27,7 +24,6 @@ type EventFormProps = {
 const EventForm = ({ userId, type }: EventFormProps) => {
   const [files, setFiles] = useState<File[]>([]);
 
-  // ✅ Ensure `eventDefaultValues` matches schema
   const initialValues = eventDefaultValues;
 
   const form = useForm<z.infer<typeof eventFormSchema>>({
@@ -35,7 +31,6 @@ const EventForm = ({ userId, type }: EventFormProps) => {
     defaultValues: initialValues,
   });
 
-  // ✅ Handle API submission for event creation/updating
   const handleFormSubmit = async (values: z.infer<typeof eventFormSchema>) => {
     try {
       const response = await fetch('/api/events', {
@@ -115,6 +110,60 @@ const EventForm = ({ userId, type }: EventFormProps) => {
                     imageUrl={field.value}
                     setFiles={setFiles}
                   />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+
+        <div className='flex flex-col gap-5 md:flex-row'>
+          {/* Location Field */}
+          <FormField
+            control={form.control}
+            name="location"
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormControl>
+                  <div className='flex-center h-[54px] w-full overflow-hidden rounded-full bg-grey-50 px-4 py-2'>
+                    <Image 
+                      src='/assets/icons/location-grey.svg'
+                      alt='calendar'
+                      width={24}
+                      height={24}
+                    />
+                    <Input placeholder="Event Location or Online" {...field} className="input-field" />
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+
+        <div className='flex flex-col gap-5 md:flex-row'>
+          {/* Start Date Field */}
+          <FormField
+            control={form.control}
+            name="startDateTime"
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormControl>
+                  <div className='flex-center h-[54px] w-full overflow-hidden rounded-full bg-grey-50 px-4 py-2'>
+                    <Image 
+                      src='/assets/icons/calendar.svg'
+                      alt='calendar'
+                      width={24}
+                      height={24}
+                      className='filter-grey'
+                    />
+                    <p className='ml-3 whitespace-nowrap text-grey-600'>Start Date:</p>
+                    <DatePicker
+                      selected={field.value ? new Date(field.value) : null}  // Ensure it's a valid Date object
+                      onChange={(date: Date | null) => field.onChange(date)}  // Handle null properly
+                      dateFormat="yyyy-MM-dd HH:mm"  // Customize date format if necessary
+                    />
+                  </div>
                 </FormControl>
                 <FormMessage />
               </FormItem>
