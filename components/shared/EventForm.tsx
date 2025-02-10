@@ -17,7 +17,7 @@ import { Input } from "@/components/ui/input";
 import { eventFormSchema } from '@/lib/validator';
 import { eventDefaultValues } from '@/constants';
 import DropDown from './Dropdown';
-// import FileUploader from './FileUploader'; // ✅ Uncommented for image upload
+import { FileUploader } from './FileUploader'; // ✅ Uncommented for image upload
 
 type EventFormProps = {
   userId: string;
@@ -110,11 +110,11 @@ const EventForm = ({ userId, type }: EventFormProps) => {
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormControl>
-                  {/* <FileUploader
+                  <FileUploader
                     onFieldChange={field.onChange}
                     imageUrl={field.value}
                     setFiles={setFiles}
-                  /> */}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>

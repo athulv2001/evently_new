@@ -1,43 +1,55 @@
-// import React, { Dispatch, SetStateAction, useCallback } from 'react';
-// import { useDropzone } from '@uploadthing/react';
+'use client'
 
-// type FileUploadProps = {
-//   imageUrl: string; // URL for the uploaded image
-//   onFieldChange: (value: string) => void; // Callback to handle field change
-//   setFiles: Dispatch<SetStateAction<File[]>>; // State for uploaded files
-// };
+import { useCallback, Dispatch, SetStateAction } from 'react'
+import { useDropzone, Accept } from 'react-dropzone' // Import 'Accept' type from 'react-dropzone'
+import { Button } from '@/components/ui/button'
+import { convertFileToUrl } from '@/lib/utils'
 
-// const FileUploader: React.FC<FileUploadProps> = ({ imageUrl, onFieldChange, setFiles }) => {
-  
-//   // Handle dropped files
-//   const onDrop = useCallback((acceptedFiles: File[]) => {
-//     setFiles(acceptedFiles); // Set the accepted files
-//     onFieldChange(acceptedFiles[0].name); // Call the field change function (name of the file)
-//   }, [setFiles, onFieldChange]);
+type FileUploaderProps = {
+  onFieldChange: (url: string) => void
+  imageUrl: string
+  setFiles: Dispatch<SetStateAction<File[]>>
+}
 
-//   // Setup Dropzone with acceptable file types for images
-//   const { getRootProps, getInputProps } = useDropzone({
-//     onDrop,
-//     accept: ['image/jpeg', 'image/png', 'image/jpg'], // Accept only image files
-//     multiple: false, // Only one file at a time
-//   });
+export function FileUploader({ imageUrl, onFieldChange, setFiles }: FileUploaderProps) {
+  // onDrop callback to handle file drop
+  const onDrop = useCallback((acceptedFiles: File[]) => {
+    setFiles(acceptedFiles) // Set files to state
+    onFieldChange(convertFileToUrl(acceptedFiles[0])) // Convert the first file to URL and trigger onFieldChange
+  }, [setFiles, onFieldChange])
 
-//   return (
-//     <div {...getRootProps()} className="border-2 border-dashed p-4 text-center cursor-pointer">
-//       <input {...getInputProps()} />
-//       {imageUrl ? (
-//         <div>
-//           <img
-//             src={imageUrl}
-//             alt="Uploaded preview"
-//             className="w-32 h-32 object-cover mx-auto"
-//           />
-//         </div>
-//       ) : (
-//         <p>Drop files here or click to upload</p>
-//       )}
-//     </div>
-//   );
-// };
+  // Correct the accept prop using a more accurate type or structure
+  const { getRootProps, getInputProps } = useDropzone({
+    onDrop,
+    accept: { 'image/jpeg': [], 'image/png': [], 'image/jpg': [] } as Accept, // Accept specific image formats
+  })
 
-// export default FileUploader;
+  return (
+    <div
+      {...getRootProps()}
+      className="flex-center bg-dark-3 flex h-72 cursor-pointer flex-col overflow-hidden rounded-xl bg-grey-50">
+      <input {...getInputProps()} className="cursor-pointer" />
+
+      {imageUrl ? (
+        <div className="flex h-full w-full flex-1 justify-center">
+          <img
+            src={imageUrl}
+            alt="image"
+            width={250}
+            height={250}
+            className="w-full object-cover object-center"
+          />
+        </div>
+      ) : (
+        <div className="flex-center flex-col py-5 text-grey-500">
+          <img src="/assets/icons/upload.svg" width={77} height={77} alt="file upload" />
+          <h3 className="mb-2 mt-2">Drag photo here</h3>
+          <p className="p-medium-12 mb-4">SVG, PNG, JPG</p>
+          <Button type="button" className="rounded-full">
+            Select from computer
+          </Button>
+        </div>
+      )}
+    </div>
+  )
+}
