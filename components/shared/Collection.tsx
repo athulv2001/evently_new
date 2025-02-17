@@ -2,6 +2,7 @@ import React from 'react'
 import { IEvent } from '@/lib/database/models/event.model'
 import Card from './Card'
 import { auth } from "@clerk/nextjs/server";
+import Pagination from './Pagination'
 
 
 type CollectionProps = {
@@ -44,6 +45,9 @@ type CollectionProps = {
               )
             })}
           </ul>
+          {totalPages > 1 && (
+            <Pagination urlParamName={urlParamName} page={page} totalPages={totalPages} />
+          )}
           </div>
         
     ): (
