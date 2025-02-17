@@ -16,6 +16,14 @@ import Image from 'next/image';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Checkbox } from '../ui/checkbox';
+// import { useUploadThing } from '@/lib/uploadthing';
+import { UploadDropzone } from '@/lib/uploadthing';
+import { useRouter } from 'next/navigation';
+import { createEvent } from '@/lib/actions/event.actions';
+import { UploadButton } from "@uploadthing/react";
+import { OurFileRouter } from "@/app/api/uploadthing/core";
+import { ClientUploadedFileData } from "uploadthing/types";
+import { FileUpload } from "@/components/file-upload";
 
 type EventFormProps = {
   userId: string;
@@ -24,51 +32,59 @@ type EventFormProps = {
 
 const EventForm = ({ userId, type }: EventFormProps) => {
   const [files, setFiles] = useState<File[]>([]);
+  // const [uploadedImageUrl, setUploadedImageUrl] = useState("");
+
+  const [isFileUploadFailed, setIsFileUploadFailed] = useState({
+    status: false,
+    error: "",
+  });
+     
+  
 
   const initialValues = eventDefaultValues;
+  // const { startUpload } = useUploadThing('imageUploader')
+  const router = useRouter()
 
   const form = useForm<z.infer<typeof eventFormSchema>>({
     resolver: zodResolver(eventFormSchema),
     defaultValues: initialValues,
   });
 
-  const handleFormSubmit = async (values: z.infer<typeof eventFormSchema>) => {
-    console.log("Submitting form with values:", values);
-    if (!userId) {
-      console.error("Error: User ID is missing!");
-      alert("User ID is required to submit the form.");
+  async function onSubmit(values: z.infer<typeof eventFormSchema>) {
+    const uploadedImageUrl = values.imageUrl;
+    
+    if (!uploadedImageUrl) {
+      console.log("Image upload is still in progress or failed. Please try again.");
       return;
     }
 
-    try {
-      const response = await fetch("/api/events", {
-        method: type === "Create" ? "POST" : "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...values, userId }),
-      });
+    console.log('FINAL IMG URL: ', uploadedImageUrl );
 
-      console.log("Response status:", response.status);
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Failed to submit form: ${errorText}`);
+    if(type === 'Create') {
+      try {
+        const newEvent = await createEvent({
+          event: {...values, imageUrl: uploadedImageUrl},
+          userId,
+          path: '/profile'
+        })
+
+        if(newEvent) {
+          form.reset();
+          router.push(`/events/${newEvent._id}`)
+        }
+        
+      } catch (error) {
+        console.log(error)
+        
       }
-
-      console.log("Event successfully submitted!", values);
-      alert(`${type} event successful!`);
-    } catch (error) {
-      console.error("Error submitting form:", error);
-      alert("Something went wrong! Check the console for details.");
     }
-  };
-
-  function onSubmit(value: z.infer<typeof eventFormSchema>) {
     
   }
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(
-        handleFormSubmit,
+        onSubmit,
         (errors) => console.log("Validation errors:", errors)
         )} className="flex flex-col gap-5">
         
@@ -116,23 +132,29 @@ const EventForm = ({ userId, type }: EventFormProps) => {
               </FormItem>
             )}
           />
-
-          {/* Image Upload Field */}
-          <FormField
-            control={form.control}
-            name="imageUrl"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormControl>
-                  <FileUploader
-                    onFieldChange={field.onChange}
-                    imageUrl={field.value}
-                    setFiles={setFiles}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
+          <FormField 
+              control={form.control}
+              name="imageUrl"
+              render={({ field }) => (
+                  <FormItem>
+                      <FormControl>
+                          <FileUpload 
+                              endpoint="serverImage"
+                              value={field.value}
+                              onChange={field.onChange}
+                              setIsFileUploadFailed={(status: boolean, error: string) => {
+                                setIsFileUploadFailed({ status, error });
+                              }}
+                          />
+                      </FormControl>
+                      <FormMessage />
+                      {isFileUploadFailed.status && (
+                      <label className="text-red-700 mt-1">
+                          {isFileUploadFailed?.error}
+                      </label> 
+                      )}
+                  </FormItem>
+              )}
           />
         </div>
 

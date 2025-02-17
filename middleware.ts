@@ -4,9 +4,10 @@ const isPublicRoute = createRouteMatcher([
   '/sign-in(.*)',
   '/sign-up(.*)',
   '/api/test',         // ✅ Allow public access to /api/test
-  '/api/webhook/clerk' // ✅ Allow Clerk Webhook to work
+  '/api/webhook/clerk', // ✅ Allow Clerk Webhook to work
+  '/api/uploadthing'
 ])
-
+  
 export default clerkMiddleware(async (auth, request) => {
   if (!isPublicRoute(request)) {
     await auth.protect()

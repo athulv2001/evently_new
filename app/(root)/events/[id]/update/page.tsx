@@ -2,7 +2,7 @@ import EventForm from '@/components/shared/EventForm'
 import { auth } from '@clerk/nextjs/server'
 import React from 'react'
 
-const UpdateEvent = () => {    // @ts-ignore
+const UpdateEvent = async () => {    // @ts-ignore
     const { sessionClaims } = await auth();
     const userId = sessionClaims?.userId as string
 
