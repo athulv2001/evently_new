@@ -12,7 +12,7 @@ const profilePage = async () => {
     const organizedEvents = await getEventsByUser({ userId, page: 1 })
   return (
     <>
-        {/* My tickets */}
+        
         <section className="bg-primary-50 bg-dotted-pattern bg-cover bg-center py-5 md:py-10">
         <div className="wrapper flex items-center justify-center sm:justify-between">
             <h3 className='h3-bold text-center sm:text-left'>My Tickets</h3>
@@ -23,21 +23,7 @@ const profilePage = async () => {
           </Button>
         </div>
         </section>
-{/* 
-        <section className="wrapper my-8">
-        <Collection
-          data={orderedEvents}
-          emptyTitle="No event tickets purchased yet"
-          emptyStateSubtext="No worries - plenty of exciting events to explore!"
-          collectionType="My_Tickets"
-          limit={3}
-          page={ordersPage}
-          urlParamName="ordersPage"
-          totalPages={orders?.totalPages}
-        />
-      </section> */}
 
-        {/* my events */}
 
         <section className="bg-primary-50 bg-dotted-pattern bg-cover bg-center py-5 md:py-10">
         <div className="wrapper flex items-center justify-center sm:justify-between">
@@ -64,7 +50,7 @@ const profilePage = async () => {
         />
       </section>
 
-        {/* events organized */}
+     
     </>
   )
 }

@@ -1,8 +1,8 @@
-"use client"; // Ensure this is a client component
+"use client"; 
 
 import { IEvent } from '@/lib/database/models/event.model';
 import { formatDateTime } from '@/lib/utils';
-import { useAuth } from '@clerk/nextjs'; // Correct import for Client Components
+
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
@@ -17,8 +17,7 @@ type CardProps = {
 };
 
 const Card = ({ event, hasOrderLink, hidePrice, userId }: CardProps) => {
-    // const { userId } = useAuth(); // Gets userId in Client Component
-    // console.log('USER COMP', userId)
+   
     const isEventCreator = userId === event.organizer._id.toString();
 
   return (
@@ -28,7 +27,7 @@ const Card = ({ event, hasOrderLink, hidePrice, userId }: CardProps) => {
         style={{backgroundImage: `url(${event.imageUrl})`}}
         className="flex-center flex-grow bg-gray-50 bg-cover bg-center text-grey-500"
       />
-      {/* IS EVENT CREATOR ... */}
+   
 
       {isEventCreator && !hidePrice && (
         <div className="absolute right-2 top-2 flex flex-col gap-4 rounded-xl bg-white p-3 shadow-sm transition-all">

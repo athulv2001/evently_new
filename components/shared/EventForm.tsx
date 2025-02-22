@@ -11,18 +11,15 @@ import { Input } from "@/components/ui/input";
 import { eventFormSchema } from '@/lib/validator';
 import { eventDefaultValues } from '@/constants';
 import DropDown from './Dropdown';
-import { FileUploader } from './FileUploader'; // ✅ Uncommented for image upload
+
 import Image from 'next/image';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Checkbox } from '../ui/checkbox';
-// import { useUploadThing } from '@/lib/uploadthing';
-import { UploadDropzone } from '@/lib/uploadthing';
+
 import { useRouter } from 'next/navigation';
 import { createEvent } from '@/lib/actions/event.actions';
-import { UploadButton } from "@uploadthing/react";
-import { OurFileRouter } from "@/app/api/uploadthing/core";
-import { ClientUploadedFileData } from "uploadthing/types";
+
 import { FileUpload } from "@/components/file-upload";
 
 type EventFormProps = {
@@ -32,7 +29,7 @@ type EventFormProps = {
 
 const EventForm = ({ userId, type }: EventFormProps) => {
   const [files, setFiles] = useState<File[]>([]);
-  // const [uploadedImageUrl, setUploadedImageUrl] = useState("");
+
 
   const [isFileUploadFailed, setIsFileUploadFailed] = useState({
     status: false,
@@ -42,7 +39,7 @@ const EventForm = ({ userId, type }: EventFormProps) => {
   
 
   const initialValues = eventDefaultValues;
-  // const { startUpload } = useUploadThing('imageUploader')
+
   const router = useRouter()
 
   const form = useForm<z.infer<typeof eventFormSchema>>({
@@ -89,7 +86,7 @@ const EventForm = ({ userId, type }: EventFormProps) => {
         )} className="flex flex-col gap-5">
         
         <div className="flex flex-col gap-5 md:flex-row">
-          {/* Event Title Field */}
+        
           <FormField
             control={form.control}
             name="title"
@@ -103,7 +100,6 @@ const EventForm = ({ userId, type }: EventFormProps) => {
             )}
           />
 
-          {/* Category Dropdown Field */}
           <FormField
             control={form.control}
             name="categoryId"
@@ -119,7 +115,7 @@ const EventForm = ({ userId, type }: EventFormProps) => {
         </div>
 
         <div className="flex flex-col gap-5 md:flex-row">
-          {/* Description Field */}
+         
           <FormField
             control={form.control}
             name="description"
@@ -159,7 +155,7 @@ const EventForm = ({ userId, type }: EventFormProps) => {
         </div>
 
         <div className='flex flex-col gap-5 md:flex-row'>
-          {/* Location Field */}
+          
           <FormField
             control={form.control}
             name="location"

@@ -1,7 +1,7 @@
 'use client'
 
 import { useCallback, Dispatch, SetStateAction } from 'react'
-import { useDropzone, Accept } from 'react-dropzone' // Import 'Accept' type from 'react-dropzone'
+import { useDropzone, Accept } from 'react-dropzone' 
 import { Button } from '@/components/ui/button'
 import { convertFileToUrl } from '@/lib/utils'
 
