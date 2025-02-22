@@ -30,7 +30,7 @@ export default async function Home({ searchParams }: SearchParamProps){
           Combines the journey toward health with the idea of finding joy.
 
           </h1>
-          <p className='p-regular-20 md:p-regular-24'>Evently isn’t just about planning events—it’s about creating impactful experiences. From medical conferences to wellness workshops, our platform ensures seamless organization so healthcare professionals can focus on what matters most—improving lives and advancing well-being. </p>
+          <p className='p-regular-20 md:p-regular-24'>Evently isn’t just about planning events it’s about creating impactful experiences. From medical conferences to wellness workshops, our platform ensures seamless organization so healthcare professionals can focus on what matters most improving lives and advancing well being. </p>
           <Button size='lg' asChild className='button w-full sm:w-fit'>
             <Link href='#events'>
             Explore Now
